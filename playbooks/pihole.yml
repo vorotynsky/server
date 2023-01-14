@@ -1,0 +1,55 @@
+- name: Install PI-hole in docker
+  hosts: all
+  vars_files:
+    - ../vars/timezone.yml
+    - ../vars/secrets.yml
+  tasks:
+  - name: Create config folder
+    file:
+      path: /home/{{ ansible_user }}/pihole
+      state: directory
+ 
+  - name: Run pihole container
+    docker_container:
+      name: pihole
+      image: pihole/pihole:2022.12.1
+      published_ports:
+        - "53:53/tcp"
+        - "53:53/udp"
+        - "67:67/udp" # Only required if you are using Pi-hole as your DHCP server
+        - "8001:80/tcp"
+      env:
+        TZ: "{{ time_zone }}"
+        WEBPASSWORD: "{{ pihole_password }}"
+      volumes:
+        - "/home/{{ ansible_user }}/pihole/pihole:/etc/pihole"
+        - "/home/{{ ansible_user }}/pihole/dnsmasq:/etc/dnsmasq.d"
+      restart_policy: unless-stopped
+
+  - name: Install ufw
+    apt:
+      pkg: ufw
+      state: latest
+      update_cache: true
+    become: true
+
+  - name: Open 53/udp port
+    ufw: 
+      default: allow
+      proto: tcp
+      port: 53
+    become: true
+
+  - name: Open 53/udp port
+    ufw: 
+      default: allow
+      proto: udp
+      port: 53
+    become: true
+
+  - name: Open 67/udp port
+    ufw: 
+      default: allow
+      proto: udp
+      port: 67
+    become: true
