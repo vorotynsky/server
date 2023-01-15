@@ -1,5 +1,7 @@
 - name: Install Nextcloud in docker
   hosts: all
+  vars_files:
+  - ../vars/secrets.yml
   tasks:
   - name: Create storage folder
     file:
@@ -12,8 +14,12 @@
       path: /data/nextcloud/db
       state: directory 
     become: true
-  
-  - name: Create docker network
+
+  - name: Create docker home network
+    docker_network:
+      name: home_net
+
+  - name: Create docker nextcloud network
     docker_network:
       name: nextcloud_net
 
@@ -38,6 +44,8 @@
       image: arm64v8/nextcloud:25.0.2
       networks:
         - name: nextcloud_net
+          aliases: nextcloud
+        - name: home_net
           aliases: nextcloud
       published_ports:
         - 8000:80

@@ -8,11 +8,18 @@
     file:
       path: /home/{{ ansible_user }}/pihole
       state: directory
+
+  - name: Create docker home network
+    docker_network:
+      name: home_net 
  
   - name: Run pihole container
     docker_container:
       name: pihole
       image: pihole/pihole:2022.12.1
+      networks: 
+        - name: home_net
+          aliases: pihole
       published_ports:
         - "53:53/tcp"
         - "53:53/udp"
