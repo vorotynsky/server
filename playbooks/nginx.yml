@@ -1,0 +1,40 @@
+- name: Install nginx in docker
+  hosts: all
+  tasks:
+  - name: Create docker home network
+    docker_network:
+      name: home_net 
+  
+  - name: Ensures nginx conf dir exists
+    file: 
+      path: "/home/{{ ansible_user }}/nginx"
+      state: directory
+
+  - name: Load config
+    copy:
+      src: ../configs/nginx.conf
+      dest: "/home/{{ ansible_user }}/nginx/domains.conf"
+      owner: deploy
+      group: docker
+
+  - name: Specify server host in nginx config
+    replace:
+      path: "/home/{{ ansible_user }}/nginx/domains.conf"
+      regexp: "<pihost>"
+      replace: "{{ ansible_host }}"
+
+  - name: Run container
+    docker_container:
+      name: nginx 
+      image: arm64v8/nginx:1.23.3 
+      networks: 
+        - name: home_net
+          aliases: nginx
+      published_ports:
+        - "80:80"
+      volumes: 
+        - "/home/{{ ansible_user }}/nginx:/etc/nginx/conf.d"
+      env:
+        HOST: "{{ ansible_host }}"
+      restart_policy: unless-stopped
+      restart: true
