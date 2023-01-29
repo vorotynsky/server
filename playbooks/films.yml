@@ -1,0 +1,133 @@
+- name: Setup films infrastructuire
+  hosts: all
+  vars_files:
+    - ../vars/timezone.yml
+    - ../vars/secrets.yml
+  tasks:
+    - name: Create media user
+      user:
+        name: media
+        create_home: false
+        home: /data/media
+        shell: /usr/sbin/nologin
+      become: true
+      register: media_user
+
+    - name: Create /media folder
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ media_user.uid }}"
+      become: true
+      loop:
+        - /media
+        - /media/cache
+        - /media/download
+        - /media/films
+
+    - name: Film config folder
+      file:
+        path: "/home/{{ ansible_user }}/films"
+        state: directory
+        owner: "{{ media_user.uid }}"
+      register: config_folder
+      become: true
+
+    - name: Create config folder
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ media_user.uid }}"
+        group: "{{ media_user.group }}"
+      loop:
+        - "{{ config_folder.path }}/qbittorrent"
+        - "{{ config_folder.path }}/jackett"
+        - "{{ config_folder.path }}/radarr"
+        - "{{ config_folder.path }}/jellyfin"
+      become: true
+
+    - name: Create docker home network
+      docker_network:
+        name: home_net
+
+    - name: Create docker films network
+      docker_network:
+        name: films_net
+
+    - name: Run qbittorrent container
+      docker_container:
+        name: qbittorrent
+        image: linuxserver/qbittorrent:arm64v8-4.5.0
+        networks:
+          - name: films_net
+            aliases: torrent
+        # ports:
+        #   - 6004:6004
+        #   - 6882:6882
+        #   - 6882:6882/udp
+        volumes:
+          - "{{ config_folder.path }}/qbittorrent:/config"
+          - "/media/download:/download"
+        env:
+          TZ: "{{ time_zone }}"
+          PUID: "{{ media_user.uid }}"
+          PGID: "{{ media_user.group }}"
+          WEBUI_PORT: "6004"
+        restart_policy: unless-stopped
+   
+    - name: Run Jackett container
+      docker_container:
+        name: jackett
+        image: linuxserver/jackett:arm64v8-0.20.2697
+        networks:
+          - name: films_net
+            aliases: jackett
+        # ports:
+        #   - 5999:9117
+        volumes:
+          - "{{ config_folder.path }}/jackett:/config"
+        env:
+          TZ: "{{ time_zone }}"
+          PUID: "{{ media_user.uid }}"
+          PGID: "{{ media_user.group }}"
+        restart_policy: unless-stopped
+
+    - name: Run Radarr container
+      docker_container:
+        name: radarr
+        image: linuxserver/radarr:arm64v8-4.3.2
+        networks:
+          - name: films_net
+            aliases: radarr
+          - name: home_net
+            aliases: radarr
+        ports:
+          - 8002:7878
+        volumes:
+          - "{{ config_folder.path }}/radarr:/config"
+          - "/media/films:/media"
+          - "/media/download:/download"
+        env:
+          TZ: "{{ time_zone }}"
+          PUID: "{{ media_user.uid }}"
+          PGID: "{{ media_user.group }}"
+        restart_policy: unless-stopped
+
+    - name: Run Jellyfin container
+      docker_container:
+        name: jellyfin
+        image: jellyfin/jellyfin:10.8.8
+        # user: "{{ media_user.uid }}:{{ media_user.group }}"
+        networks: 
+          - name: home_net
+            aliases: jellyfin
+          - name: films_net
+            aliases: jellyfin
+          # - name: host # To use DLNA change custom network to host
+        published_ports:
+          - 8096:8096
+        restart_policy: 'unless-stopped'
+        volumes:
+          - "{{ config_folder.path }}/jellyfin:/config"
+          - "/media/cache:/cache"
+          - "/media/films:/media/films"
