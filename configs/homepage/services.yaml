@@ -1,0 +1,37 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/services
+
+- Services:
+    - Jellyfin:
+        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/jellyfin.svg
+        href: http://jellyfin.home.box
+        description: Movies streaming
+        widget:
+            type: jellyfin
+            url: http://jellyfin.home_net:8096
+            key: {{ jellyfin_api }}
+
+    - Radarr:
+        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/radarr.svg
+        href: http://radarr.home.box
+        description: Movies library management
+        widget:
+            type: radarr
+            url: http://radarr.home_net:7878
+            key: {{ radarr_api }}
+
+    - PiHole:
+        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/pihole.svg
+        href: http://pihole.home.box/admin/
+        description: Ad-blocking DNS
+        widget:
+            type: pihole
+            url: http://192.168.0.11:8001
+            key: {{ pihole_api }}
+
+- Cloud:
+    - NextCloud:
+        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/nextcloud.png
+        href: http://nextcloud.home.box/
+        description: Cloud drive

@@ -1,0 +1,32 @@
+- name: Build homepage
+  hosts: all
+  vars_files:
+    - ../vars/keys.yml
+  tasks:
+    - name: Copy homepage config
+      copy:
+        dest: "/home/{{ ansible_user }}/"
+        src: "../configs/homepage"
+
+    - name: Place api keys
+      template:
+        src: ../configs/homepage/services.yaml
+        dest: "/home/{{ ansible_user }}/homepage/services.yaml"
+
+    - name: Create docker home network
+      docker_network:
+        name: home_net
+
+    - name: Run homepage container
+      docker_container:
+        image: ghcr.io/benphelps/homepage:v0.6.7
+        name: homepage
+        networks:
+          - name: home_net
+            aliases: homepage
+        ports:
+          - 3000:3000
+        volumes:
+          - "/home/{{ ansible_user}}/homepage:/app/config"
+          - "/data:/data:ro"
+          - "/media:/media:ro"

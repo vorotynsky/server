@@ -1,0 +1,17 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/settings
+
+providers:
+  openweathermap: openweathermapapikey
+  weatherapi: weatherapiapikey
+
+layout:
+  Services:
+    style: row
+    columns: 3
+  Cloud:
+    style: row
+    columns: 3
+
+headerStyle: clean
