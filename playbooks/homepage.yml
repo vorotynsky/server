@@ -30,3 +30,4 @@
           - "/home/{{ ansible_user}}/homepage:/app/config"
           - "/data:/data:ro"
           - "/media:/media:ro"
+        restart_policy: unless-stopped
