@@ -24,6 +24,7 @@
         - /media/cache
         - /media/download
         - /media/films
+        - /media/series
 
     - name: Film config folder
       file:
@@ -43,6 +44,7 @@
         - "{{ config_folder.path }}/qbittorrent"
         - "{{ config_folder.path }}/jackett"
         - "{{ config_folder.path }}/radarr"
+        - "{{ config_folder.path }}/sonarr"
         - "{{ config_folder.path }}/jellyfin"
       become: true
 
@@ -92,6 +94,27 @@
           PGID: "{{ media_user.group }}"
         restart_policy: unless-stopped
 
+    - name: Run Sonarr container
+      docker_container:
+        name: sonarr
+        image: linuxserver/sonarr:arm64v8-3.0.10
+        networks:
+          - name: films_net
+            aliases: sonarr
+          - name: home_net
+            aliases: sonarr
+        ports:
+          - 8003:8989
+        volumes:
+          - "{{ config_folder.path }}/sonarr:/config"
+          - "/media/series:/media"
+          - "/media/download:/download"
+        env:
+          TZ: "{{ time_zone }}"
+          PUID: "{{ media_user.uid }}"
+          PGID: "{{ media_user.group }}"
+        restart_policy: unless-stopped
+
     - name: Run Radarr container
       docker_container:
         name: radarr
@@ -131,3 +154,4 @@
           - "{{ config_folder.path }}/jellyfin:/config"
           - "/media/cache:/cache"
           - "/media/films:/media/films"
+          - "/media/series:/media/series"

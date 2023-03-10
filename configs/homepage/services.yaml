@@ -2,7 +2,7 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/en/configs/services
 
-- Services:
+- Media:
     - Jellyfin:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/jellyfin.svg
         href: http://jellyfin.home.box
@@ -21,6 +21,21 @@
             url: http://radarr.home_net:7878
             key: {{ radarr_api }}
 
+    - Sonarr:
+        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/sonarr.svg
+        href: http://sonarr.home_net:7878
+        description: Series library management
+        widget:
+            type: sonarr
+            url: http://sonarr.home_net:8989
+            key: {{ sonarr_api }}
+
+- Cloud:
+    - NextCloud:
+        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/nextcloud.png
+        href: http://nextcloud.home.box/
+        description: Cloud drive
+
     - PiHole:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/pihole.svg
         href: http://pihole.home.box/admin/
@@ -30,8 +45,3 @@
             url: http://192.168.0.11:8001
             key: {{ pihole_api }}
 
-- Cloud:
-    - NextCloud:
-        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/nextcloud.png
-        href: http://nextcloud.home.box/
-        description: Cloud drive

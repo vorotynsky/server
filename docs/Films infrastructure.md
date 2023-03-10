@@ -25,6 +25,10 @@ Open `host:8002`.
 - Settigns > General: change authentication to forms and specify credentials.
 - Settings > Media manager: `show advansed settings` and enable `Rename movies`.
 
+## Sonarr
+
+Do same things as for Radarr, but on the `host:8003`.
+
 ## Jellyfin
 
 Open `host:8096` and go through the initial setup.
