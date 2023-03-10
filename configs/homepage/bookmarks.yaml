@@ -1,3 +1,21 @@
 ---
 # For configuration options and examples, please see:
 # https://gethomepage.dev/en/configs/bookmarks
+
+- Entertaiment:
+  - IMDb:
+    - icon: https://www.imdb.com/favicon.ico
+      href: https://www.imdb.com/
+
+- Developemnt:
+  - GitHub: 
+    - icon: https://github.com/favicon.ico
+      href: https://github.com
+
+- Social:
+  - Telegram:
+    - icon: https://web.telegram.org/z/favicon.svg
+      href: https://web.telegram.org/
+  - Linkedin:
+    - icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/linkedin.png
+      href: https://linkedin.com/

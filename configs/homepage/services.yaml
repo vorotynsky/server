@@ -23,7 +23,7 @@
 
     - Sonarr:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/sonarr.svg
-        href: http://sonarr.home_net:7878
+        href: http://sonarr.home.box
         description: Series library management
         widget:
             type: sonarr
@@ -35,6 +35,12 @@
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/nextcloud.png
         href: http://nextcloud.home.box/
         description: Cloud drive
+        widget:
+            type: nextcloud
+            url: http://nextcloud.home_net:80
+            fields: [ "freespace" ]
+            username: {{ nextcloud_user }}
+            password: {{ nextcloud_password }}
 
     - PiHole:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/pihole.svg
