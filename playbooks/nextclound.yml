@@ -41,7 +41,7 @@
   - name: Run nextcloud container
     docker_container:
       name: nextcloud
-      image: arm64v8/nextcloud:25.0.2
+      image: arm64v8/nextcloud:26.0.0
       networks:
         - name: nextcloud_net
           aliases: nextcloud
