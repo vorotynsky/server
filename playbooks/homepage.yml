@@ -19,7 +19,7 @@
 
     - name: Run homepage container
       docker_container:
-        image: ghcr.io/benphelps/homepage:v0.6.10
+        image: ghcr.io/benphelps/homepage:v0.6.11
         name: homepage
         networks:
           - name: home_net
