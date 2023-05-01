@@ -2,6 +2,7 @@
   hosts: all
   vars_files:
     - ../vars/keys.yml
+    - ../vars/versions.yml
   tasks:
     - name: Copy homepage config
       copy:
@@ -19,7 +20,7 @@
 
     - name: Run homepage container
       docker_container:
-        image: ghcr.io/benphelps/homepage:v0.6.11
+        image: ghcr.io/benphelps/homepage:{{ homepage_version }}
         name: homepage
         networks:
           - name: home_net

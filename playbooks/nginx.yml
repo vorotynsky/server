@@ -1,5 +1,7 @@
 - name: Install nginx in docker
   hosts: all
+  vars_files:
+    - ../vars/versions.yml
   tasks:
   - name: Create docker home network
     docker_network:
@@ -26,7 +28,7 @@
   - name: Run container
     docker_container:
       name: nginx 
-      image: arm64v8/nginx:1.23.3 
+      image: arm64v8/nginx:{{ nginx_version }}
       networks: 
         - name: home_net
           aliases: nginx

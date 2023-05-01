@@ -1,7 +1,8 @@
 - name: Install Nextcloud in docker
   hosts: all
   vars_files:
-  - ../vars/secrets.yml
+    - ../vars/secrets.yml
+    - ../vars/versions.yml
   tasks:
   - name: Create storage folder
     file:
@@ -26,7 +27,7 @@
   - name: Run postgress container
     docker_container:
       name: nextcloud_db
-      image: arm64v8/postgres:14
+      image: arm64v8/postgres:{{ postgres_next_version }}
       networks:
         - name: nextcloud_net
           aliases: nextcloud_db
@@ -41,7 +42,7 @@
   - name: Run nextcloud container
     docker_container:
       name: nextcloud
-      image: arm64v8/nextcloud:26.0.0
+      image: arm64v8/nextcloud:{{ nextcloud_version }}
       networks:
         - name: nextcloud_net
           aliases: nextcloud

@@ -3,6 +3,7 @@
   vars_files:
     - ../vars/timezone.yml
     - ../vars/secrets.yml
+    - ../vars/versions.yml
   tasks:
   - name: Create config folder
     file:
@@ -16,7 +17,7 @@
   - name: Run pihole container
     docker_container:
       name: pihole
-      image: pihole/pihole:2023.03.1
+      image: pihole/pihole:{{ pihole_version }}
       networks: 
         - name: home_net
           aliases: pihole
