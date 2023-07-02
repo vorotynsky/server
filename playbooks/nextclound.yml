@@ -3,6 +3,7 @@
   vars_files:
     - ../vars/secrets.yml
     - ../vars/versions.yml
+    - ../vars/ports.yml
   tasks:
   - name: Create storage folder
     file:
@@ -49,7 +50,7 @@
         - name: home_net
           aliases: nextcloud
       published_ports:
-        - 8000:80
+        - "{{ nextcloud_port }}:80"
       restart_policy: always
       env:
         POSTGRES_DB: nextcloud

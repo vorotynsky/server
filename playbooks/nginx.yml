@@ -2,6 +2,7 @@
   hosts: all
   vars_files:
     - ../vars/versions.yml
+    - ../vars/ports.yml
   tasks:
   - name: Create docker home network
     docker_network:
@@ -12,18 +13,14 @@
       path: "/home/{{ ansible_user }}/nginx"
       state: directory
 
-  - name: Load config
-    copy:
+  - name: Load nginx config
+    template:
       src: ../configs/nginx.conf
       dest: "/home/{{ ansible_user }}/nginx/domains.conf"
       owner: deploy
       group: docker
-
-  - name: Specify server host in nginx config
-    replace:
-      path: "/home/{{ ansible_user }}/nginx/domains.conf"
-      regexp: "<pihost>"
-      replace: "{{ ansible_host }}"
+    vars:
+      pihost: "{{ ansible_host }}"
 
   - name: Run container
     docker_container:

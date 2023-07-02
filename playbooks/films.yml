@@ -4,6 +4,7 @@
     - ../vars/timezone.yml
     - ../vars/secrets.yml
     - ../vars/versions.yml
+    - ../vars/ports.yml
   tasks:
     - name: Create media user
       user:
@@ -105,7 +106,7 @@
           - name: home_net
             aliases: sonarr
         ports:
-          - 8003:8989
+          - "{{ sonarr_port }}:8989"
         volumes:
           - "{{ config_folder.path }}/sonarr:/config"
           - "/media/series:/media"
@@ -126,7 +127,7 @@
           - name: home_net
             aliases: radarr
         ports:
-          - 8002:7878
+          - "{{ radarr_port }}:7878"
         volumes:
           - "{{ config_folder.path }}/radarr:/config"
           - "/media/films:/media"
@@ -149,7 +150,7 @@
             aliases: jellyfin
           # - name: host # To use DLNA change custom network to host
         published_ports:
-          - 8096:8096
+          - "{{ jellyfin_port }}:8096"
         restart_policy: 'unless-stopped'
         volumes:
           - "{{ config_folder.path }}/jellyfin:/config"

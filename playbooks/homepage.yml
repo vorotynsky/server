@@ -3,6 +3,7 @@
   vars_files:
     - ../vars/keys.yml
     - ../vars/versions.yml
+    - ../vars/ports.yml
   tasks:
     - name: Copy homepage config
       copy:
@@ -26,7 +27,7 @@
           - name: home_net
             aliases: homepage
         ports:
-          - 3000:3000
+          - "{{ homepage_port }}:3000"
         volumes:
           - "/home/{{ ansible_user}}/homepage:/app/config"
           - "/data:/data:ro"
