@@ -1,0 +1,29 @@
+- name: Setup films infrastructuire
+  hosts: all
+  vars_files:
+    - ../vars/secrets.yml
+    - ../vars/versions.yml
+    - ../vars/ports.yml
+  tasks:
+  - name: Create storage folder
+    file:
+      path: /data/actual
+      state: directory
+    become: true
+
+  - name: Create docker home network
+    docker_network:
+      name: home_net 
+
+  - name: Run actualbudget container
+    docker_container:
+      name: actualbudget 
+      image: actualbudget/actual-server:{{ actualbudget_version }}
+      networks:
+        - name: home_net
+          aliases: actualbudget
+      published_ports:
+        - "{{ actualbudget_port }}:5006"
+      restart_policy: always
+      volumes:
+        - "/data/actualbudget:/data"

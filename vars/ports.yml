@@ -3,4 +3,5 @@ nextcloud_port   : 8000
 pihole_port      : 8001
 radarr_port      : 8002
 sonarr_port      : 8003
+actualbudget_port: 8006
 jellyfin_port    : 8096

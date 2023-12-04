@@ -8,3 +8,4 @@ postgres_next_version: 14 # https://hub.docker.com/r/arm64v8/postgres
 qbittorrent_version: arm64v8-4.5.4 # https://hub.docker.com/r/linuxserver/qbittorrent
 radarr_version: arm64v8-4.5.2 # https://hub.docker.com/r/linuxserver/radarr
 sonarr_version: arm64v8-3.0.10 # https://hub.docker.com/r/linuxserver/sonarr
+actualbudget_version: 23.11.0 # https://hub.docker.com/r/actualbudget/actual-server
