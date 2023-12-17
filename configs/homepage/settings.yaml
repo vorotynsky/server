@@ -8,11 +8,11 @@ providers:
 
 layout:
   Media:
-    style: row
-    columns: 3
+    style: column
+    # row: 3
   Cloud:
-    style: row
-    columns: 3
+    style: column
+    # columns: 3
 
 hideVersion: true
 headerStyle: clean

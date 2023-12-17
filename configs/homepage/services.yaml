@@ -43,7 +43,7 @@
             password: {{ nextcloud_password }}
 
     - PiHole:
-        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/pihole.svg
+        icon: http://pihole.home.box/admin/img/logo.svg
         href: http://pihole.home.box/admin/
         description: Ad-blocking DNS
         widget:
