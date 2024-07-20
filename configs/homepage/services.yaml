@@ -5,7 +5,7 @@
 - Media:
     - Jellyfin:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/jellyfin.svg
-        href: http://jellyfin.home.box
+        href: http://jellyfin.{{ domain }}
         description: Movies streaming
         widget:
             type: jellyfin
@@ -14,7 +14,7 @@
 
     - Radarr:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/radarr.svg
-        href: http://radarr.home.box
+        href: http://radarr.{{ domain }}
         description: Movies library management
         widget:
             type: radarr
@@ -23,7 +23,7 @@
 
     - Sonarr:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/sonarr.svg
-        href: http://sonarr.home.box
+        href: http://sonarr.{{ domain }}
         description: Series library management
         widget:
             type: sonarr
@@ -33,7 +33,7 @@
 - Cloud:
     - NextCloud:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/nextcloud.png
-        href: http://nextcloud.home.box/
+        href: http://nextcloud.{{ domain }}/
         description: Cloud drive
         widget:
             type: nextcloud
@@ -43,8 +43,8 @@
             password: {{ nextcloud_password }}
 
     - PiHole:
-        icon: http://pihole.home.box/admin/img/logo.svg
-        href: http://pihole.home.box/admin/
+        icon: http://pihole.{{ domain }}/admin/img/logo.svg
+        href: http://pihole.{{ domain }}/admin/
         description: Ad-blocking DNS
         widget:
             type: pihole
@@ -52,7 +52,7 @@
             key: {{ pihole_api }}
 
     - Actual Budget:
-        icon: http://budget.home.box/favicon.ico
-        href: http://budget.home.box/
+        icon: http://budget.{{ domain }}/favicon.ico
+        href: http://budget.{{ domain }}/
         description: Finacial management application
         widget:

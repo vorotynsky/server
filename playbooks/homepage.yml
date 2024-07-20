@@ -4,6 +4,7 @@
     - ../vars/keys.yml
     - ../vars/versions.yml
     - ../vars/ports.yml
+    - ../vars/host.yml
   tasks:
     - name: Copy homepage config
       copy:

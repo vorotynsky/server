@@ -3,6 +3,7 @@
   vars_files:
     - ../vars/versions.yml
     - ../vars/ports.yml
+    - ../vars/host.yml
   tasks:
   - name: Create docker home network
     docker_network:
