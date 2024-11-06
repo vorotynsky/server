@@ -10,3 +10,4 @@ radarr_version: arm64v8-5.6.0 # https://hub.docker.com/r/linuxserver/radarr
 sonarr_version: arm64v8-4.0.5 # https://hub.docker.com/r/linuxserver/sonarr
 actualbudget_version: 24.6.0 # https://hub.docker.com/r/actualbudget/actual-server
 couchdb_version: 3.3.3 # https://hub.docker.com/_/couchdb
+paisa_version: v0.7.1-hledger # https://hub.docker.com/r/ananthakumaran/paisa

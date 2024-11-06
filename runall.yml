@@ -4,7 +4,7 @@
 - import_playbook: nextcloud.yml
 - import_playbook: films.yml
 - import_playbook: pihole.yml
-- import_playbook: actual.yml
+- import_playbook: paisa.yml
 
 - import_playbook: nginx.yml
 - import_playbook: homepage.yml

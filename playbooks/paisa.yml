@@ -1,0 +1,38 @@
+- name: Install Paisa and hledger in docker
+  hosts: all
+  vars_files:
+    - ../vars/secrets.yml
+    - ../vars/versions.yml
+    - ../vars/ports.yml
+  tasks:
+    - name: Create a group
+      ansible.builtin.group:
+        name: budget
+        state: present
+      become: true
+
+    - name: Create storage folder
+      file:
+        path: /data/paisa
+        owner: root
+        group: budget
+        state: directory
+        mode: '0770'
+      become: true
+
+    - name: Create docker network
+      community.general.docker_network:
+        name: accounting_net
+
+    - name: Run Paisa container
+      docker_container:
+        name: paisa
+        image: ananthakumaran/paisa:{{ paisa_version }}
+        networks:
+          - name: accounting_net
+            aliases: paisa
+        published_ports:
+          - "{{ paisa_port }}:7500"
+        restart_policy: always
+        volumes:
+          - "/data/paisa:/root/Documents/paisa/"

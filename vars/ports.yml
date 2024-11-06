@@ -5,4 +5,5 @@ pihole_port      : 8001
 radarr_port      : 8002
 sonarr_port      : 8003
 actualbudget_port: 8006
+paisa_port       : 8007
 jellyfin_port    : 8096
