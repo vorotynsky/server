@@ -11,3 +11,5 @@ sonarr_version: arm64v8-4.0.5 # https://hub.docker.com/r/linuxserver/sonarr
 actualbudget_version: 24.6.0 # https://hub.docker.com/r/actualbudget/actual-server
 couchdb_version: 3.3.3 # https://hub.docker.com/_/couchdb
 paisa_version: v0.7.1-hledger # https://hub.docker.com/r/ananthakumaran/paisa
+paperless_reddis_version: 7.4.2 # https://hub.docker.com/_/redis
+paperless_version: 2.14.5 # ghcr.io/paperless-ngx/paperless-ngx

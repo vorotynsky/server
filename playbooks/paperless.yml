@@ -1,0 +1,79 @@
+- name: Deploy Paperless
+  hosts: all
+  vars_files:
+    - ../vars/versions.yml
+    - ../vars/ports.yml
+    - ../vars/host.yml
+  vars:
+    paperless_base_dir: /data/paperless
+  tasks:
+    - name: Create user
+      user:
+        name: paperowner
+        create_home: false
+        home: /data/paperless
+        shell: /usr/sbin/nologin
+      become: true
+      register: paper_user
+
+    - name: Create Paperless directory
+      file:
+        path: "{{ paperless_base_dir }}/{{ item }}"
+        state: directory
+        owner: "{{ paper_user.uid }}"
+      become: true
+      loop:
+        - data
+        - export
+        - consume
+        - media 
+
+    - name: Create Paperless redis directory
+      file:
+        path: "{{ paperless_base_dir }}/redisdata"
+        state: directory
+      become: true
+
+    - name: Create docker networks
+      docker_network:
+        name: "{{ item }}"
+      loop:
+        - home_net
+        - paperless_net
+
+    - name: Deploy Redis (broker container)
+      community.docker.docker_container:
+        name: paperless_redis
+        image: redis:{{ paperless_reddis_version }}
+        networks: 
+          - name: paperless_net
+            aliases: broker
+        restart_policy: unless-stopped
+        volumes:
+          - "{{ paperless_base_dir }}/redisdata:/data"
+        user: "0:0"
+
+    - name: Deploy Webserver (Paperless-ngx)
+      community.docker.docker_container:
+        name: paperless_server
+        image: ghcr.io/paperless-ngx/paperless-ngx:{{ paperless_version }}
+        networks: 
+          - name: paperless_net
+            aliases: peperless
+          - name: home_net
+            aliases: peperless
+        restart_policy: unless-stopped
+        ports:
+          - "{{ paperless_port }}:8000"
+        volumes:
+          - "{{ paperless_base_dir }}/data:/usr/src/paperless/data"
+          - "{{ paperless_base_dir }}/media:/usr/src/paperless/media"
+          - "{{ paperless_base_dir }}/export:/usr/src/paperless/export"
+          - "{{ paperless_base_dir }}/consume:/usr/src/paperless/consume"
+        env:
+          PAPERLESS_REDIS: redis://paperless_reddis.paperless_net:6379
+          USERMAP_UID: "{{ paper_user.uid }}"
+          USERMAP_GID: "{{ paper_user.group }}"
+          PAPERLESS_ADMIN_USER: "admin"
+          PAPERLESS_ADMIN_PASSWORD: "{{ paperless_admin_password }}"
+          PAPERLESS_URL: "http://paperless.{{ domain }}"

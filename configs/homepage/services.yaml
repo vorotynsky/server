@@ -56,3 +56,8 @@
         href: http://budget.{{ domain }}/
         description: Finacial management application
         widget:
+
+    - Paperless:
+        icon: http://paperless.{{ domain }}/favicon.ico
+        href: http://paperless.{{ domain }}
+        description: Document management system
