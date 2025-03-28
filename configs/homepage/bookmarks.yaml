@@ -4,13 +4,15 @@
 
 - Entertaiment:
   - IMDb:
-    - icon: https://www.imdb.com/favicon.ico
-      href: https://www.imdb.com/
+    - href: https://www.imdb.com/
 
 - Developemnt:
   - GitHub: 
     - icon: https://github.com/favicon.ico
       href: https://github.com
+  - LiteLLM:
+    - icon: http://{{ ip }}:4000/ui/favicon.ico
+      href: http://{{ ip }}:4000/ui
 
 - Social:
   - Telegram:

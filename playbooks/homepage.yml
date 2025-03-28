@@ -13,8 +13,11 @@
 
     - name: Place api keys
       template:
-        src: ../configs/homepage/services.yaml
-        dest: "/home/{{ ansible_user }}/homepage/services.yaml"
+        src: "../configs/homepage/{{ item }}.yaml"
+        dest: "/home/{{ ansible_user }}/homepage/{{ item }}.yaml"
+      loop:
+        - "services"
+        - "bookmarks"
 
     - name: Create docker home network
       docker_network:
