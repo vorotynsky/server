@@ -6,5 +6,6 @@ radarr_port      : 8002
 sonarr_port      : 8003
 actualbudget_port: 8006
 paisa_port       : 8007
+openwebui_port   : 8008
 paperless_port   : 8009
 jellyfin_port    : 8096
