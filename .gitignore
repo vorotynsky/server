@@ -2,3 +2,4 @@ inventory.yml
 vars/secrets.yml
 vars/keys.yml
 vars/host.yml
+vars/location.yml

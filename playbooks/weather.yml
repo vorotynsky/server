@@ -1,0 +1,59 @@
+- name: Setup weather
+  hosts: all
+  vars_files:
+    - ../vars/ports.yml
+    - ../vars/secrets.yml
+    - ../vars/location.yml
+  tasks:
+
+    - name: Set temp file name
+      set_fact:
+        temp_script: "/tmp/weather.sh.{{ (10**10) | random }}"
+      run_once: yes
+
+    - name: Download weather script to temp location
+      get_url:
+        url: https://raw.githubusercontent.com/vorotynsky/weather/refs/heads/master/scripts/weather.sh
+        dest: "{{ temp_script }}"
+        mode: '0644'
+
+    - name: Uncomment variables and set their values in temp file
+      replace:
+        path: "{{ temp_script }}"
+        regexp: '^# readonly set {{ item.name }}=".*"'
+        replace: "readonly set {{ item.name }}=\"{{ item.value }}\""
+      loop:
+        - { name: 'API_KEY', value: '{{ openweather_api }}' }
+        - { name: 'LAT', value: '{{ lat }}' }
+        - { name: 'LON', value: '{{ lon }}' }
+        - { name: 'STORAGE', value: '/data/weather' }
+
+    - name: Move temp script to cron.hourly atomically and set executable permissions
+      copy:
+        src: "{{ temp_script }}"
+        dest: /etc/cron.hourly/weather
+        mode: '0711'
+        owner: root
+        group: root
+        remote_src: yes
+        force: yes
+        backup: yes
+      become: true
+
+    - name: Remove temporary script
+      file:
+        path: "{{ temp_script }}"
+        state: absent
+
+    - name: Run weather container
+      docker_container:
+        name: weather
+        image: ghcr.io/vorotynsky/weather:master
+        networks: 
+          - name: home_net
+            aliases: weather
+        published_ports:
+          - "{{ weather_port }}:80/tcp"
+        volumes:
+          - "/data/weather/latest:/mnt/latest"
+        restart_policy: unless-stopped

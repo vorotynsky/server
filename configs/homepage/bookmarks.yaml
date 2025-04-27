@@ -1,10 +1,12 @@
 ---
 # For configuration options and examples, please see:
-# https://gethomepage.dev/en/configs/bookmarks
+# https://gethomepage.dev/configs/bookmarks
 
-- Entertaiment:
+- Links:
   - IMDb:
     - href: https://www.imdb.com/
+  - Weather:
+    - href: http://weather.{{ domain }}
 
 - Developemnt:
   - GitHub: 
