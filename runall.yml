@@ -6,6 +6,7 @@
 - import_playbook: playbooks/pihole.yml
 - import_playbook: playbooks/paisa.yml
 - import_playbook: playbooks/paperless.yml
+- import_playbook: playbooks/litellm.yml
 - import_playbook: playbooks/openwebui.yml
 
 - import_playbook: playbooks/nginx.yml

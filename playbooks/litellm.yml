@@ -1,0 +1,71 @@
+- name: Deploy LiteLLM container
+  hosts: all
+  vars_files:
+    - ../vars/ai.yml
+    - ../vars/ports.yml
+    - ../vars/versions.yml
+  tasks:
+    - name: Create litellm directory
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - "/home/{{ ansible_user }}/litellm/"
+        - "/home/{{ ansible_user }}/litellm/config"
+        - "/home/{{ ansible_user }}/litellm/db"
+    
+    - name: Copy litellm config
+      copy:
+        dest: "/home/{{ ansible_user }}/litellm/config/{{ item }}"
+        src: "../configs/litellm/{{ item }}"
+      loop:
+        - "config.yml"
+        - "models.yml"
+
+    - name: Create litellm config file
+      file:
+        path: "/home/{{ ansible_user }}/litellm/config.yml"
+        state: touch
+        mode: '0664'
+
+    - name: Create docker ai network
+      docker_network:
+        name: ai_net
+    
+    - name: Create database container
+      docker_container:
+        name: litellm_db
+        image: arm64v8/postgres:{{ postgres_next_version }}
+        networks:
+          - name: ai_net
+            aliases: litellm_db
+        restart_policy: always
+        env:
+          POSTGRES_DB: litellm
+          POSTGRES_USER: litellm
+          POSTGRES_PASSWORD: "{{ litellm_db_password }}"
+        volumes:
+          - "/home/{{ ansible_user }}/litellm/db:/var/lib/postgresql/data"
+ 
+    
+    - name: Deploy LiteLLM container
+      docker_container:
+        name: litellm
+        image: ghcr.io/berriai/litellm-non_root:{{ litellm_version }}
+        networks:
+          - name: ai_net
+            aliases: litellm
+        restart_policy: always
+        ports:
+          - "4000:4000"
+        env:
+          DATABASE_URL: "postgresql://litellm:{{ litellm_db_password }}@litellm_db.ai_net:5432/litellm"
+          LITELLM_MASTER_KEY: "{{ litellm_master }}" # sk-1234
+          LITELLM_SALT_KEY: "{{ litellm_salt }}" # sk-1234
+          STORE_MODEL_IN_DB: "True"
+          OPENAI_API_KEY: "{{ openai }}"
+          ANTHROPIC_API_KEY: "{{ anthropic }}"
+        command: ["--config", "/config/config.yml"]
+        volumes:
+          - "/home/{{ ansible_user }}/litellm/config:/config"
+ 

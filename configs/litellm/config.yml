@@ -1,0 +1,7 @@
+include: 
+  - models.yml
+
+general_settings:
+  turn_off_message_logging: false
+  store_prompts_in_spend_logs: true
+  store_model_in_db: true
