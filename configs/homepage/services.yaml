@@ -46,6 +46,7 @@
         description: Ad-blocking DNS
         widget:
             type: pihole
+            version: 6
             url: http://pihole.home_net:80
             key: {{ pihole_api }}
 
