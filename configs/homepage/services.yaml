@@ -46,6 +46,7 @@
         description: Ad-blocking DNS
         widget:
             type: pihole
+            version: 6
             url: http://pihole.home_net:80
             key: {{ pihole_api }}
 
@@ -63,3 +64,8 @@
         icon: http://paperless.{{ domain }}/favicon.ico
         href: http://paperless.{{ domain }}
         description: Document management system
+
+    - Bitwarden:
+        icon: https://raw.githubusercontent.com/dani-garcia/vaultwarden/refs/heads/main/resources/vaultwarden-icon.svg
+        href: https://{{ ip }}:{{ vaultwarden_port }}/
+        description: Password storage

@@ -32,6 +32,8 @@
             aliases: homepage
         ports:
           - "{{ homepage_port }}:3000"
+        env:
+          HOMEPAGE_ALLOWED_HOSTS: "{{domain}},{{ip}}:{{homepage_port}}"
         volumes:
           - "/home/{{ ansible_user}}/homepage:/app/config"
           - "/data:/data:ro"
