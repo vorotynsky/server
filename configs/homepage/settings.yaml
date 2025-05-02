@@ -1,18 +1,15 @@
 ---
-# For configuration options and examples, please see:
-# https://gethomepage.dev/en/configs/settings
 
-providers:
-  openweathermap: openweathermapapikey
-  weatherapi: weatherapiapikey
+useEqualHeights: true
 
 layout:
-  Media:
-    style: column
-    # row: 3
   Cloud:
-    style: column
-    # columns: 3
+    style: row
+    columns: 3
+
+  Media:
+    style: row
+    columns: 3
 
 hideVersion: true
 headerStyle: clean

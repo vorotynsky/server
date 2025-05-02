@@ -1,6 +1,4 @@
 ---
-# For configuration options and examples, please see:
-# https://gethomepage.dev/en/configs/services
 
 - Media:
     - Jellyfin:
@@ -48,7 +46,7 @@
         description: Ad-blocking DNS
         widget:
             type: pihole
-            url: http://192.168.0.11:8001
+            url: http://pihole.home_net:80
             key: {{ pihole_api }}
 
     - OpenWebUI:
