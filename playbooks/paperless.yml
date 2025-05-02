@@ -71,9 +71,10 @@
           - "{{ paperless_base_dir }}/export:/usr/src/paperless/export"
           - "{{ paperless_base_dir }}/consume:/usr/src/paperless/consume"
         env:
-          PAPERLESS_REDIS: redis://paperless_reddis.paperless_net:6379
+          PAPERLESS_REDIS: redis://broker.paperless_net:6379
           USERMAP_UID: "{{ paper_user.uid }}"
           USERMAP_GID: "{{ paper_user.group }}"
           PAPERLESS_ADMIN_USER: "admin"
           PAPERLESS_ADMIN_PASSWORD: "{{ paperless_admin_password }}"
           PAPERLESS_URL: "http://paperless.{{ domain }}"
+          PAPERLESS_OCR_USER_ARGS: '{"continue_on_soft_render_error": true}'
