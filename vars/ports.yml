@@ -8,4 +8,5 @@ paisa_port       : 8007
 openwebui_port   : 8008
 paperless_port   : 8009
 weather_port     : 8010
+bytestash_port   : 8012
 jellyfin_port    : 8096

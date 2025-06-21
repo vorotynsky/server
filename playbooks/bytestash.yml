@@ -1,0 +1,37 @@
+- name: Setup ByteStash infrastructure
+  hosts: all
+  vars_files:
+    - ../vars/versions.yml
+    - ../vars/ports.yml
+  tasks:
+  - name: Create storage folder for ByteStash snippets
+    file:
+      path: /data/bytestash
+      state: directory
+    become: true
+
+  - name: Create docker home network
+    docker_network:
+      name: home_net 
+      state: present
+
+  - name: Run ByteStash container
+    docker_container:
+      name: bytestash
+      image: ghcr.io/jordan-dalby/bytestash:{{ bytestash_version }}
+      networks:
+        - name: home_net
+          aliases: bytestash
+      published_ports:
+        - "{{ bytestash_port }}:5000"
+      restart_policy: always
+      volumes:
+        - "/data/bytestash:/data/snippets"
+      env:
+        BASE_PATH: "" 
+        JWT_SECRET: "{{ lookup('community.general.random_string', length=48) }}"
+        TOKEN_EXPIRY: "12d"
+        ALLOW_NEW_ACCOUNTS: "false"
+        DEBUG: "false"
+        DISABLE_ACCOUNTS: "false"
+        DISABLE_INTERNAL_ACCOUNTS: "false"

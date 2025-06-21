@@ -14,3 +14,4 @@ paperless_reddis_version: 7.4.2 # https://hub.docker.com/_/redis
 paperless_version: 2.15.2 # https://ghcr.io/paperless-ngx/paperless-ngx
 litellm_version: main-v1.67.0-stable  # https://ghcr.io/berriai/litellm-non_root
 openwebui_version: latest # container without version
+bytestash_version: 1.5.8 # https://ghcr.io/jordan-dalby/bytestash
