@@ -64,3 +64,8 @@
         icon: http://paperless.{{ domain }}/favicon.ico
         href: http://paperless.{{ domain }}
         description: Document management system
+
+    - Bitwarden:
+        icon: https://raw.githubusercontent.com/dani-garcia/vaultwarden/refs/heads/main/resources/vaultwarden-icon.svg
+        href: https://{{ bitwarden_host }}
+        description: Password storage
